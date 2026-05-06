@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Table Tap — Restaurant Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --linen:#F5F0E8;--parchment:#EDE4D3;--sand:#C4956A;--terracotta:#8B5E3C;
+  --bark:#4A3728;--clay:#2C1F14;--olive:#5C6B3A;
+  --surface:#E8DFCE;
+  --border:rgba(44,31,20,0.1);--border-strong:rgba(44,31,20,0.18);
+  --text-1:#2C1F14;--text-2:rgba(44,31,20,0.58);--text-3:rgba(44,31,20,0.36);
+}
+body{background:var(--linen);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;}
+
+.logo{display:flex;align-items:baseline;gap:0;text-decoration:none;}
+.logo-table{font-family:'DM Serif Display',serif;font-size:20px;color:var(--clay);}
+.logo-tap{font-family:'DM Serif Display',serif;font-size:20px;font-style:italic;color:var(--terracotta);}
+
+.topbar{background:var(--parchment);border-bottom:0.5px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.topbar-right{display:flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text-2);}
+.session-dot{width:7px;height:7px;border-radius:50%;background:var(--olive);}
+
+.page{padding:2rem;}
+.max{max-width:680px;margin:0 auto;}
+
+.r-card{background:var(--parchment);border:0.5px solid var(--border-strong);border-radius:14px;padding:1.2rem 1.4rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;}
+.r-identity{display:flex;align-items:center;gap:11px;}
+.r-avatar{width:42px;height:42px;border-radius:10px;background:var(--clay);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:18px;color:var(--linen);}
+.r-name{font-size:15px;font-weight:500;color:var(--text-1);}
+.r-meta{font-size:12px;color:var(--text-3);margin-top:1px;}
+.badge{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:500;}
+.badge-live{background:rgba(92,107,58,.12);color:var(--olive);}
+.badge-pending{background:rgba(139,94,60,.1);color:var(--terracotta);}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.4rem;}
+.stat{background:var(--parchment);border-radius:10px;padding:12px 14px;}
+.stat-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;}
+.stat-value{font-size:22px;font-weight:500;color:var(--text-1);}
+.stat-sub{font-size:11px;color:var(--text-3);margin-top:2px;}
+
+.section-card{background:var(--parchment);border:0.5px solid var(--border);border-radius:14px;padding:1.4rem;margin-bottom:1rem;}
+.section-title{font-size:14px;font-weight:500;color:var(--text-1);margin-bottom:3px;display:flex;align-items:center;gap:7px;}
+.section-title svg{width:16px;height:16px;stroke:var(--text-2);stroke-width:1.5;fill:none;}
+.section-sub{font-size:12px;color:var(--text-3);margin-bottom:1.2rem;line-height:1.55;}
+
+.field-label{font-size:12px;color:var(--text-2);display:block;margin-bottom:5px;}
+.field-group{margin-bottom:11px;}
+.field-input{width:100%;height:42px;padding:0 12px;border-radius:10px;border:0.5px solid var(--border-strong);background:var(--linen);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text-1);outline:none;transition:border-color .15s;}
+.field-input::placeholder{color:var(--text-3);}
+.field-input:focus{border-color:var(--terracotta);}
+.prize-row{display:grid;grid-template-columns:110px 1fr;gap:8px;}
+
+.preview-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px;}
+.preview-pill{display:flex;align-items:center;gap:8px;background:var(--clay);border-radius:11px;padding:10px 14px;margin-top:4px;}
+.preview-pill svg{width:14px;height:14px;stroke:var(--sand);stroke-width:1.5;fill:none;flex-shrink:0;}
+.preview-pill-text{font-family:'DM Serif Display',serif;font-size:15px;font-style:italic;color:var(--sand);}
+.preview-pill-sub{font-size:11px;color:rgba(245,240,232,.38);margin-top:1px;font-family:'DM Sans',sans-serif;}
+
+.deadline-info{display:flex;align-items:center;gap:7px;padding:9px 12px;background:rgba(44,31,20,.05);border-radius:9px;font-size:12px;color:var(--text-2);margin-top:10px;}
+.deadline-info svg{width:14px;height:14px;stroke:var(--text-3);stroke-width:1.5;fill:none;flex-shrink:0;}
+
+.submit-btn{width:100%;height:48px;border-radius:11px;background:var(--terracotta);border:none;color:var(--linen);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;margin-top:13px;transition:opacity .15s,transform .1s;}
+.submit-btn:hover{opacity:.86;}
+.submit-btn:active{transform:scale(.98);}
+.submit-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;}
+.error-msg{font-size:12px;color:#993C1D;margin-top:7px;display:none;}
+.success-banner{display:none;align-items:center;gap:8px;background:rgba(92,107,58,.1);border:0.5px solid rgba(92,107,58,.2);border-radius:9px;padding:10px 13px;margin-top:10px;font-size:13px;color:var(--olive);}
+.success-banner svg{width:15px;height:15px;stroke:var(--olive);stroke-width:1.5;fill:none;}
+
+.past-draws{background:var(--parchment);border:0.5px solid var(--border);border-radius:14px;overflow:hidden;}
+.past-header{padding:.9rem 1.4rem;border-bottom:0.5px solid var(--border);font-size:13px;font-weight:500;color:var(--text-1);display:flex;align-items:center;gap:7px;}
+.past-header svg{width:15px;height:15px;stroke:var(--text-2);stroke-width:1.5;fill:none;}
+.draw-row{display:flex;align-items:center;justify-content:space-between;padding:10px 1.4rem;border-bottom:0.5px solid var(--border);font-size:13px;}
+.draw-row:last-child{border-bottom:none;}
+.draw-week{color:var(--text-3);font-size:12px;}
+.draw-prize-name{color:var(--text-1);font-weight:500;}
+.draw-entries{color:var(--text-3);font-size:12px;}
+.draw-winner{font-size:11px;color:var(--olive);background:rgba(92,107,58,.1);padding:3px 8px;border-radius:999px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="logo" href="#"><span class="logo-table">table</span><span class="logo-tap">tap</span></a>
+  <div class="topbar-right">
+    <div class="session-dot"></div>
+    The Golden Fork
+  </div>
+</div>
+
+<div class="page">
+  <div class="max">
+
+    <div class="r-card">
+      <div class="r-identity">
+        <div class="r-avatar">G</div>
+        <div>
+          <div class="r-name">The Golden Fork</div>
+          <div class="r-meta">Fortitude Valley · Active since Jan 2026</div>
+        </div>
+      </div>
+      <span class="badge badge-pending" id="status-badge">Prize needed</span>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat"><div class="stat-label">This week</div><div class="stat-value">84</div><div class="stat-sub">entries so far</div></div>
+      <div class="stat"><div class="stat-label">All time</div><div class="stat-value">431</div><div class="stat-sub">contacts collected</div></div>
+      <div class="stat"><div class="stat-label">Draw closes</div><div class="stat-value" id="countdown">—</div><div class="stat-sub">days remaining</div></div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        This week's prize
+      </div>
+      <p class="section-sub">Set the prize diners will see when they scan your QR code. Draw closes Sunday midnight.</p>
+
+      <div class="prize-row">
+        <div class="field-group"><label class="field-label" for="prize-val">Value</label><input class="field-input" type="text" id="prize-val" placeholder="$50" oninput="updatePreview()"/></div>
+        <div class="field-group"><label class="field-label" for="prize-desc">Description</label><input class="field-input" type="text" id="prize-desc" placeholder="Drinks voucher" oninput="updatePreview()"/></div>
+      </div>
+
+      <div class="preview-label">Live preview on ticket</div>
+      <div class="preview-pill">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <div>
+          <div class="preview-pill-text" id="preview-text">Enter a prize above to preview</div>
+          <div class="preview-pill-sub">Valid 30 days · Winner notified by email</div>
+        </div>
+      </div>
+
+      <div class="deadline-info">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Once submitted, your prize goes live on the QR ticket immediately and locks at Sunday midnight.
+      </div>
+
+      <p class="error-msg" id="error-msg">Please enter both a prize value and description.</p>
+      <button class="submit-btn" onclick="submitPrize()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Submit this week's prize
+      </button>
+      <div class="success-banner" id="success-banner">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        Prize is live on your QR ticket. Diners can now enter this week's draw.
+      </div>
+    </div>
+
+    <div class="past-draws">
+      <div class="past-header">
+        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+        Previous draws
+      </div>
+      <div class="draw-row">
+        <div><div class="draw-week">Week of 28 Apr</div><div class="draw-prize-name">$50 cocktail voucher</div></div>
+        <div style="text-align:right"><div class="draw-entries">112 entries</div><div class="draw-winner">Winner notified</div></div>
+      </div>
+      <div class="draw-row">
+        <div><div class="draw-week">Week of 21 Apr</div><div class="draw-prize-name">Free dessert for two</div></div>
+        <div style="text-align:right"><div class="draw-entries">98 entries</div><div class="draw-winner">Winner notified</div></div>
+      </div>
+      <div class="draw-row">
+        <div><div class="draw-week">Week of 14 Apr</div><div class="draw-prize-name">$30 dining credit</div></div>
+        <div style="text-align:right"><div class="draw-entries">76 entries</div><div class="draw-winner">Winner notified</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const day=new Date().getDay();
+document.getElementById('countdown').textContent=day===0?0:7-day;
+function updatePreview(){
+  const v=document.getElementById('prize-val').value.trim();
+  const d=document.getElementById('prize-desc').value.trim();
+  document.getElementById('preview-text').textContent=(v||d)?[v,d].filter(Boolean).join(' '):'Enter a prize above to preview';
+}
+function submitPrize(){
+  const v=document.getElementById('prize-val').value.trim();
+  const d=document.getElementById('prize-desc').value.trim();
+  const err=document.getElementById('error-msg');
+  const banner=document.getElementById('success-banner');
+  if(!v||!d){err.style.display='block';banner.style.display='none';return;}
+  err.style.display='none';
+  banner.style.display='flex';
+  document.getElementById('status-badge').textContent='Prize live';
+  document.getElementById('status-badge').className='badge badge-live';
+}
+</script>
+</body>
+</html>
