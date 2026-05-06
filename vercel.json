@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/join", "destination": "/2-diner-ticket.html" },
+    { "source": "/portal", "destination": "/3-restaurant-portal.html" },
+    { "source": "/admin", "destination": "/4-admin-dashboard.html" }
+  ]
+}
