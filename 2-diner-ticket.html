@@ -151,15 +151,53 @@ body{background:var(--parchment);font-family:'DM Sans',sans-serif;min-height:100
   </div>
 </div>
 <script>
-function handleSubmit(){
+async function handleSubmit(){
   const fname=document.getElementById('fname').value.trim();
+  const lname=document.getElementById('lname').value.trim();
   const email=document.getElementById('email').value.trim();
+  const phone=document.getElementById('phone').value.trim();
   const consent=document.getElementById('consent').checked;
   const err=document.getElementById('error-msg');
+  const btn=document.querySelector('.submit-btn');
+
   if(!fname||!email||!consent){err.style.display='block';return;}
   err.style.display='none';
-  document.getElementById('form-body').style.display='none';
-  document.getElementById('success-wrap').style.display='block';
+  btn.disabled=true;
+  btn.innerHTML='Entering...';
+
+  const restaurantName=document.querySelector('.t-restaurant').textContent.trim();
+  const prizeName=document.querySelector('.prize-value').textContent.trim();
+
+  try{
+    const res=await fetch('https://formspree.io/f/xaqvblrr',{
+      method:'POST',
+      headers:{'Accept':'application/json','Content-Type':'application/json'},
+      body:JSON.stringify({
+        _subject:'New diner sign-up: '+restaurantName,
+        first_name:fname,
+        last_name:lname,
+        email:email,
+        phone:phone,
+        restaurant:restaurantName,
+        prize_entered_for:prizeName,
+        consent_given:'Yes'
+      })
+    });
+    if(res.ok){
+      document.getElementById('form-body').style.display='none';
+      document.getElementById('success-wrap').style.display='block';
+    } else {
+      err.textContent='Something went wrong. Please try again.';
+      err.style.display='block';
+      btn.disabled=false;
+      btn.innerHTML='<svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/></svg> Enter the draw';
+    }
+  } catch(e){
+    err.textContent='Network error. Please check your connection.';
+    err.style.display='block';
+    btn.disabled=false;
+    btn.innerHTML='<svg viewBox="0 0 24 24"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/></svg> Enter the draw';
+  }
 }
 </script>
 </body>
